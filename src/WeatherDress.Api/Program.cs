@@ -1,3 +1,4 @@
+// CI check: verificerer at pipeline og branch protection virker
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
