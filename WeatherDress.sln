@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5FE6F1BC-358C-4B2B-A258-D346AD648B5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherDress.Api", "src\WeatherDress.Api\WeatherDress.Api.csproj", "{C5672744-6065-4F02-A5B5-50331F28530E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{46C91885-EEE1-4FB7-BF6F-084C0EC8F359}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherDress.UnitTests", "tests\WeatherDress.UnitTests\WeatherDress.UnitTests.csproj", "{FAE8021A-D1E7-4CF8-B00C-888971348D6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UITestRESTWeatherDressAsync", "tests\UITestRESTWeatherDressAsync\UITestRESTWeatherDressAsync.csproj", "{04AA4959-AE1E-441B-B314-175B6E2E56C0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C5672744-6065-4F02-A5B5-50331F28530E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5672744-6065-4F02-A5B5-50331F28530E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5672744-6065-4F02-A5B5-50331F28530E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5672744-6065-4F02-A5B5-50331F28530E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAE8021A-D1E7-4CF8-B00C-888971348D6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAE8021A-D1E7-4CF8-B00C-888971348D6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAE8021A-D1E7-4CF8-B00C-888971348D6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAE8021A-D1E7-4CF8-B00C-888971348D6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04AA4959-AE1E-441B-B314-175B6E2E56C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04AA4959-AE1E-441B-B314-175B6E2E56C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04AA4959-AE1E-441B-B314-175B6E2E56C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04AA4959-AE1E-441B-B314-175B6E2E56C0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C5672744-6065-4F02-A5B5-50331F28530E} = {5FE6F1BC-358C-4B2B-A258-D346AD648B5A}
+		{FAE8021A-D1E7-4CF8-B00C-888971348D6C} = {46C91885-EEE1-4FB7-BF6F-084C0EC8F359}
+		{04AA4959-AE1E-441B-B314-175B6E2E56C0} = {46C91885-EEE1-4FB7-BF6F-084C0EC8F359}
+	EndGlobalSection
+EndGlobal
