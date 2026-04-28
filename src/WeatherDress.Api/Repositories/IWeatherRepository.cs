@@ -4,5 +4,6 @@ namespace WeatherDress.Api.Repositories;
 
 public interface IWeatherRepository
 {
-    WeatherForecast GetForecastByZip(string zipCode);
+    List<WeatherForecast> GetTodayForecast(string zipCode);
+    List<WeatherForecast> GetYesterdayForecast(string zipCode);
 }

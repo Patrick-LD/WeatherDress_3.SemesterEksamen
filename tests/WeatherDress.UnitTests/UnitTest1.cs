@@ -6,58 +6,56 @@ namespace WeatherDress.UnitTests;
 
 public class WeatherRepositoryTests
 {
+    private readonly string _todayFakeJson = "{\"hourly\":{\"time\":[\"2026-04-28T09:00\"],\"temperature_2m\":[15.0],\"weathercode\":[2],\"windspeed_10m\":[5.0],\"relativehumidity_2m\":[80],\"precipitation\":[0.0]}}";
+    private readonly string _coordinatesFakeJson = "[{\"lat\":\"55.67\",\"lon\":\"12.56\",\"display_name\":\"Copenhagen, Denmark\"}]";
+
     [Fact]
-    public void GetForecastByZip_ValidZip_ReturnsWeatherForecast()
+    public void GetTodayForecast_ValidZip_ReturnsList()
     {
-        // Arrange
-        var fakeJson = "{\"name\":\"Copenhagen\",\"main\":{\"temp\":15.0,\"humidity\":80},\"weather\":[{\"description\":\"klar himmel\",\"icon\":\"01d\"}],\"wind\":{\"speed\":5.0}}";
-        var repo = CreateRepo(fakeJson, HttpStatusCode.OK);
+        var repo = CreateRepo(_coordinatesFakeJson, _todayFakeJson);
 
-        // Act
-        var result = repo.GetForecastByZip("2100");
+        var result = repo.GetTodayForecast("2100");
 
-        // Assert
-        Assert.Equal("Copenhagen", result.Location);
-        Assert.Equal(15.0, result.TemperatureC);
+        Assert.NotEmpty(result);
+        Assert.Equal(15.0, result[0].TemperatureC);
+        Assert.Equal("delvist skyet", result[0].Description);
     }
 
     [Fact]
-    public void GetForecastByZip_InvalidZip_ThrowsArgumentException()
+    public void GetTodayForecast_InvalidZip_ThrowsArgumentException()
     {
-        // Arrange
-        var repo = CreateRepo("", HttpStatusCode.NotFound);
+        var repo = CreateRepo("[]", _todayFakeJson);
 
-        // Act & Assert
-        Assert.Throws<ArgumentException>(() => repo.GetForecastByZip("9999"));
+        Assert.Throws<ArgumentException>(() => repo.GetTodayForecast("9999"));
     }
 
-    private WeatherRepository CreateRepo(string fakeJson, HttpStatusCode statusCode)
+    private WeatherRepository CreateRepo(string coordinatesJson, string weatherJson)
     {
-        var httpClient = new HttpClient(new FakeHttpHandler(fakeJson, statusCode));
-        var config = new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string?> { { "OpenWeather:ApiKey", "testkey" } })
-            .Build();
-        return new WeatherRepository(httpClient, config);
+        var responses = new Queue<string>(new[] { coordinatesJson, weatherJson });
+        var handler = new FakeHttpHandler(responses);
+        var httpClient = new HttpClient(handler);
+        return new WeatherRepository(httpClient);
     }
 }
 
 public class FakeHttpHandler : HttpMessageHandler
 {
-    private readonly string _json;
-    private readonly HttpStatusCode _statusCode;
+    private readonly Queue<string> _responses;
 
-    public FakeHttpHandler(string json, HttpStatusCode statusCode)
+    public FakeHttpHandler(Queue<string> responses)
     {
-        _json = json;
-        _statusCode = statusCode;
+        _responses = responses;
     }
 
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
+        var json = _responses.Dequeue();
+        var statusCode = json == "[]" ? HttpStatusCode.OK : HttpStatusCode.OK;
+
         return Task.FromResult(new HttpResponseMessage
         {
-            StatusCode = _statusCode,
-            Content = new StringContent(_json)
+            StatusCode = statusCode,
+            Content = new StringContent(json)
         });
     }
 }

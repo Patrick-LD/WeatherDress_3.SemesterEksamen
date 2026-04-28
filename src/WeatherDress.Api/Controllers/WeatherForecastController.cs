@@ -14,13 +14,27 @@ public class WeatherForecastController : ControllerBase
         _weatherRepository = weatherRepository;
     }
 
-    [HttpGet("{zipCode}")]
-    public IActionResult GetForecast(string zipCode)
+    [HttpGet("{zipCode}/today")]
+    public IActionResult GetToday(string zipCode)
     {
         try
         {
-            var forecast = _weatherRepository.GetForecastByZip(zipCode);
-            return Ok(forecast);
+            var forecasts = _weatherRepository.GetTodayForecast(zipCode);
+            return Ok(forecasts);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpGet("{zipCode}/yesterday")]
+    public IActionResult GetYesterday(string zipCode)
+    {
+        try
+        {
+            var forecasts = _weatherRepository.GetYesterdayForecast(zipCode);
+            return Ok(forecasts);
         }
         catch (ArgumentException ex)
         {
