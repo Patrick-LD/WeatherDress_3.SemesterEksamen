@@ -16,13 +16,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RPI", "RPI", "{268A6B6F-1BA9-4703-91DD-23043E2D9906}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{17DC665C-2B3F-4D71-BADB-8EB82273DBFF}"
-	ProjectSection(SolutionItems) = preProject
-		frontend\index.html = frontend\index.html
-		frontend\package.json = frontend\package.json
-		frontend\vite.config.js = frontend\vite.config.js
-		frontend\src\App.vue = frontend\src\App.vue
-		frontend\src\main.js = frontend\src\main.js
-	EndProjectSection
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "frontend", "frontend\frontend.esproj", "{8E5A1F2B-9C3D-4A7E-B215-6F4D8C1A9E03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +37,10 @@ Global
 		{04AA4959-AE1E-441B-B314-175B6E2E56C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04AA4959-AE1E-441B-B314-175B6E2E56C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04AA4959-AE1E-441B-B314-175B6E2E56C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E5A1F2B-9C3D-4A7E-B215-6F4D8C1A9E03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E5A1F2B-9C3D-4A7E-B215-6F4D8C1A9E03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E5A1F2B-9C3D-4A7E-B215-6F4D8C1A9E03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E5A1F2B-9C3D-4A7E-B215-6F4D8C1A9E03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,5 +49,6 @@ Global
 		{C5672744-6065-4F02-A5B5-50331F28530E} = {5FE6F1BC-358C-4B2B-A258-D346AD648B5A}
 		{FAE8021A-D1E7-4CF8-B00C-888971348D6C} = {46C91885-EEE1-4FB7-BF6F-084C0EC8F359}
 		{04AA4959-AE1E-441B-B314-175B6E2E56C0} = {46C91885-EEE1-4FB7-BF6F-084C0EC8F359}
+		{8E5A1F2B-9C3D-4A7E-B215-6F4D8C1A9E03} = {17DC665C-2B3F-4D71-BADB-8EB82273DBFF}
 	EndGlobalSection
 EndGlobal
