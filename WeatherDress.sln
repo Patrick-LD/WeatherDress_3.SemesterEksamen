@@ -16,6 +16,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RPI", "RPI", "{268A6B6F-1BA9-4703-91DD-23043E2D9906}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{17DC665C-2B3F-4D71-BADB-8EB82273DBFF}"
+	ProjectSection(SolutionItems) = preProject
+		frontend\index.html = frontend\index.html
+		frontend\package.json = frontend\package.json
+		frontend\vite.config.js = frontend\vite.config.js
+		frontend\src\App.vue = frontend\src\App.vue
+		frontend\src\main.js = frontend\src\main.js
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
