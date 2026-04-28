@@ -1,0 +1,9 @@
+{
+  "name": "weatherdress",
+  "scripts": {
+    "dev": "concurrently --names \"API,FRONTEND\" --prefix-colors \"cyan,green\" \"dotnet run --project src/WeatherDress.Api\" \"npm run dev --prefix frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
