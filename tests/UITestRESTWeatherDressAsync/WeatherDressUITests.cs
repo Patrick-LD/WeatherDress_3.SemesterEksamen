@@ -4,21 +4,20 @@ using OpenQA.Selenium.Support.UI;
 using FluentAssertions;
 using WebDriverManager;
 using WebDriverManager.DriverConfigs.Impl;
-using WebDriverManager.Helpers;
 
 namespace UITestRESTWeatherDressAsync;
 
 public class WeatherDressUITests
 {
     private IWebDriver _driver = null!;
-    private const string BaseUrl = "http://localhost:5173";
+    private const string BaseUrl = "http://localhost:5058";
     private const string ValidPostnummer = "2100";
     private const string InvalidPostnummer = "0000";
 
     [SetUp]
     public void Setup()
     {
-        new DriverManager().SetUpDriver(new ChromeConfig(), VersionResolveStrategy.MatchingBrowser);
+        new DriverManager().SetUpDriver(new ChromeConfig());
 
         var options = new ChromeOptions();
         options.AddArgument("--headless");
@@ -198,7 +197,7 @@ public class WeatherDressUITests
         _driver.FindElement(By.Id("submit-button")).Click();
     }
 
-    private IWebElement VentPaaElement(By locator, int sekunder = 30)
+    private IWebElement VentPaaElement(By locator, int sekunder = 10)
     {
         return new WebDriverWait(_driver, TimeSpan.FromSeconds(sekunder))
             .Until(d => d.FindElement(locator));
