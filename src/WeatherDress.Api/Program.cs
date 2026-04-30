@@ -1,4 +1,5 @@
 using WeatherDress.Api.Repositories;
+using WeatherDress.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
+builder.Services.AddSingleton<IWeatherDescriptionService, WeatherDescriptionService>();
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
 
 var app = builder.Build();

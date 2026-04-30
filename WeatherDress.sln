@@ -11,9 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{46C91885
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherDress.UnitTests", "tests\WeatherDress.UnitTests\WeatherDress.UnitTests.csproj", "{FAE8021A-D1E7-4CF8-B00C-888971348D6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UITestRESTWeatherDressAsync", "tests\UITestRESTWeatherDressAsync\UITestRESTWeatherDressAsync.csproj", "{04AA4959-AE1E-441B-B314-175B6E2E56C0}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RPI", "RPI", "{268A6B6F-1BA9-4703-91DD-23043E2D9906}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherDress.UITests", "tests\WeatherDress.UITests\WeatherDress.UITests.csproj", "{04AA4959-AE1E-441B-B314-175B6E2E56C0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{17DC665C-2B3F-4D71-BADB-8EB82273DBFF}"
 EndProject
