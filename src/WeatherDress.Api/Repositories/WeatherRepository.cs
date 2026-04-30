@@ -1,15 +1,18 @@
 using System.Text.Json;
 using WeatherDress.Api.Models;
+using WeatherDress.Api.Services;
 
 namespace WeatherDress.Api.Repositories;
 
 public class WeatherRepository : IWeatherRepository
 {
     private readonly HttpClient _httpClient;
+    private readonly IWeatherDescriptionService _descriptionService;
 
-    public WeatherRepository(HttpClient httpClient)
+    public WeatherRepository(HttpClient httpClient, IWeatherDescriptionService descriptionService)
     {
         _httpClient = httpClient;
+        _descriptionService = descriptionService;
     }
 
     // Konverterer postnummer til koordinater via Nominatim (OpenStreetMap)
@@ -30,25 +33,6 @@ public class WeatherRepository : IWeatherRepository
         var city = root.GetProperty("navn").GetString()!;
 
         return (lat, lon, city);
-    }
-
-    // Mapper Open-Meteo WMO vejrkoder til dansk beskrivelse
-    private string GetDescription(int code)
-    {
-        return code switch
-        {
-            0 => "klar himmel",
-            1 => "overvejende klar",
-            2 => "delvist skyet",
-            3 => "overskyet",
-            45 or 48 => "tåge",
-            51 or 53 or 55 => "let støvregn",
-            61 or 63 or 65 => "regn",
-            71 or 73 or 75 => "sne",
-            80 or 81 or 82 => "regnbyger",
-            95 => "tordenvejr",
-            _ => "ukendt"
-        };
     }
 
     public List<WeatherForecast> GetTodayForecast(string zipCode)
@@ -80,7 +64,7 @@ public class WeatherRepository : IWeatherRepository
                 Date = today,
                 Time = times[i].GetString()!.Substring(11, 5),
                 TemperatureC = temps[i].GetDouble(),
-                Description = GetDescription(codes[i].GetInt32()),
+                Description = _descriptionService.GetDescription(codes[i].GetInt32()),
                 WindSpeed = winds[i].GetDouble(),
                 Humidity = humidity[i].GetInt32(),
                 Precipitation = precip[i].GetDouble()
@@ -119,7 +103,7 @@ public class WeatherRepository : IWeatherRepository
                 Date = yesterday,
                 Time = times[i].GetString()!.Substring(11, 5),
                 TemperatureC = temps[i].GetDouble(),
-                Description = GetDescription(codes[i].GetInt32()),
+                Description = _descriptionService.GetDescription(codes[i].GetInt32()),
                 WindSpeed = winds[i].GetDouble(),
                 Humidity = humidity[i].GetInt32(),
                 Precipitation = precip[i].GetDouble()

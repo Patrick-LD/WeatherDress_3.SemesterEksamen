@@ -25,7 +25,7 @@ dotnet test tests/WeatherDress.UnitTests
 dotnet test tests/WeatherDress.UnitTests --filter "FullyQualifiedName~GetTodayForecast_ValidZip_ReturnsList"
 
 # Run UI/Selenium tests (requires Chrome locally — excluded from CI)
-dotnet test tests/UITestRESTWeatherDressAsync
+dotnet test tests/WeatherDress.UITests
 ```
 
 API is served at `https://localhost:7144` (HTTPS) or `http://localhost:5058` (HTTP). Swagger UI is available at `/swagger` in development.
@@ -58,7 +58,7 @@ An `ArgumentException` is thrown when the Dataforsyningen API returns no results
 
 **Unit tests** (`WeatherDress.UnitTests`, xUnit + Moq + FluentAssertions): Use a custom `FakeHttpHandler : HttpMessageHandler` to mock HTTP responses from both external APIs. Tests create a real `WeatherRepository` with the fake handler injected — no Moq mocking of the repository itself.
 
-**UI/integration tests** (`UITestRESTWeatherDressAsync`, NUnit + Selenium): Placeholder structure exists; not yet implemented. These are excluded from CI because they require Chrome.
+**UI/integration tests** (`WeatherDress.UITests`, NUnit + Selenium): Placeholder structure exists; not yet implemented. These are excluded from CI because they require Chrome.
 
 ## Branching & Commit Conventions
 

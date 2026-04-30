@@ -73,7 +73,7 @@ WeatherDress_3.SemesterEksamen/
 │
 └── tests/
     ├── WeatherDress.UnitTests/             ← xUnit tests
-    └── UITestRESTWeatherDressAsync/        ← NUnit + Selenium UI tests
+    └── WeatherDress.UITests/               ← NUnit + Selenium UI tests
 ```
 
 Vi har tre projekter:
@@ -82,9 +82,7 @@ Vi har tre projekter:
 |---|---|---|
 | `WeatherDress.Api` | ASP.NET Core Web API (.NET 9) | Standard template |
 | `WeatherDress.UnitTests` | xUnit | Moq, FluentAssertions, `Microsoft.AspNetCore.Mvc.Testing` |
-| `UITestRESTWeatherDressAsync` | NUnit + Selenium | Selenium.WebDriver, Support, ChromeDriver, WebDriverManager, FluentAssertions |
-
-Navngivningen `UITestRESTWeatherDressAsync` følger mønsteret fra tidligere semester.
+| `WeatherDress.UITests` | NUnit + Selenium | Selenium.WebDriver, Support, ChromeDriver, WebDriverManager, FluentAssertions |
 
 ---
 

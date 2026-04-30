@@ -1,6 +1,7 @@
 using System.Net;
 using Microsoft.Extensions.Configuration;
 using WeatherDress.Api.Repositories;
+using WeatherDress.Api.Services;
 
 namespace WeatherDress.UnitTests;
 
@@ -26,7 +27,7 @@ public class WeatherRepositoryTests
     {
         var responses = new Queue<string>(new[] { "" , _todayFakeJson });
         var handler = new FakeHttpHandler(responses, firstCallStatusCode: System.Net.HttpStatusCode.NotFound);
-        var repo = new WeatherRepository(new HttpClient(handler));
+        var repo = new WeatherRepository(new HttpClient(handler), new WeatherDescriptionService());
 
         Assert.Throws<ArgumentException>(() => repo.GetTodayForecast("9999"));
     }
@@ -36,7 +37,7 @@ public class WeatherRepositoryTests
         var responses = new Queue<string>(new[] { coordinatesJson, weatherJson });
         var handler = new FakeHttpHandler(responses);
         var httpClient = new HttpClient(handler);
-        return new WeatherRepository(httpClient);
+        return new WeatherRepository(httpClient, new WeatherDescriptionService());
     }
 }
 

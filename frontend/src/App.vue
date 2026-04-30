@@ -1,123 +1,33 @@
 <script setup>
-import { ref, computed } from 'vue'
+import InputForm from './components/InputForm.vue'
+import WeatherCard from './components/WeatherCard.vue'
+import ClothingList from './components/ClothingList.vue'
+import WeatherMessage from './components/WeatherMessage.vue'
+import { useWeather } from './composables/useWeather.js'
 
-const postnummer = ref('')
-const loading = ref(false)
-const fejl = ref('')
-const visPanel = ref(false)
-const todayData = ref([])
-const yesterdayData = ref([])
-
-const nuværende = computed(() => findNuværendeTime(todayData.value))
-const gårMiddag = computed(() => findMiddag(yesterdayData.value))
-const tøjListe = computed(() => beregnTøj(nuværende.value))
-const meddelelse = computed(() => lavMeddelelse(nuværende.value))
-
-async function søgVejr() {
-  const zip = postnummer.value.trim()
-  if (!zip) return
-
-  loading.value = true
-  fejl.value = ''
-
-  try {
-    const [today, yesterday] = await Promise.all([
-      hentData(`/api/weatherforecast/${zip}/today`),
-      hentData(`/api/weatherforecast/${zip}/yesterday`)
-    ])
-    todayData.value = today
-    yesterdayData.value = yesterday
-    visPanel.value = true
-  } catch (err) {
-    fejl.value = err.message
-  } finally {
-    loading.value = false
-  }
-}
-
-async function hentData(url) {
-  const res = await fetch(url)
-  if (!res.ok) {
-    const tekst = await res.text()
-    throw new Error(tekst || `Fejl fra server (${res.status})`)
-  }
-  return res.json()
-}
-
-function visForside() {
-  visPanel.value = false
-  postnummer.value = ''
-  fejl.value = ''
-}
-
-function findNuværendeTime(data) {
-  if (!data.length) return {}
-  const targetTime = new Date().getHours().toString().padStart(2, '0') + ':00'
-  return data.find(e => e.time === targetTime) ?? data[0]
-}
-
-function findMiddag(data) {
-  if (!data.length) return {}
-  return data.find(e => e.time === '12:00') ?? data[12] ?? data[0]
-}
-
-function beregnTøj(e) {
-  if (!e || e.temperatureC === undefined) return []
-  const { temperatureC: temp, windSpeed: vind, precipitation: nedbor } = e
-  const items = []
-
-  if (temp < 0)       items.push('Tyk vinterjakke', 'Hue og handsker', 'Vinterstøvler')
-  else if (temp < 5)  items.push('Varm jakke', 'Hue og handsker')
-  else if (temp < 10) items.push('Jakke', 'Sweater')
-  else if (temp < 15) items.push('Let jakke')
-  else if (temp < 20) items.push('Langærmet trøje')
-  else                items.push('T-shirt')
-
-  if (nedbor > 0) items.push('Regnjakke / paraply')
-  if (vind > 10)  items.push('Vindjakke')
-
-  return items
-}
-
-function lavMeddelelse(e) {
-  if (!e || !e.location) return ''
-  let msg = `Det er ${capitalize(e.description)} i ${e.location} med ${Math.round(e.temperatureC)}°C. `
-
-  if (e.windSpeed > 15)     msg += 'Der er kraftig vind — hold godt fast i hatten. '
-  else if (e.windSpeed > 8) msg += 'Der er en del vind. '
-
-  if (e.precipitation > 5)      msg += 'Det regner kraftigt — tag din paraply med!'
-  else if (e.precipitation > 0) msg += 'Der er let regn.'
-  else                          msg += 'Nyd din dag!'
-
-  return msg
-}
-
-function capitalize(str) {
-  if (!str) return ''
-  return str.charAt(0).toUpperCase() + str.slice(1)
-}
+const {
+  postnummer,
+  loading,
+  fejl,
+  visPanel,
+  nuværende,
+  gårMiddag,
+  tøjListe,
+  meddelelse,
+  søgVejr,
+  visForside
+} = useWeather()
 </script>
 
 <template>
   <!-- Forside: postnummer-input -->
-  <div v-if="!visPanel" id="input-section">
-    <h1>WeatherDress</h1>
-    <p>Indtast dit postnummer for at få vejr og påklædningsforslag</p>
-    <input
-      id="postnummer-input"
-      v-model="postnummer"
-      @keydown.enter="søgVejr"
-      type="text"
-      placeholder="Postnummer"
-      maxlength="4"
-      inputmode="numeric"
-    />
-    <button id="submit-button" @click="søgVejr" :disabled="loading">
-      {{ loading ? 'Henter vejr…' : 'Søg vejr' }}
-    </button>
-    <div v-if="fejl" id="error-message">{{ fejl }}</div>
-  </div>
+  <InputForm
+    v-if="!visPanel"
+    v-model="postnummer"
+    :loading="loading"
+    :fejl="fejl"
+    @submit="søgVejr"
+  />
 
   <!-- WeatherDress-panel -->
   <div v-else id="weatherdress-panel">
@@ -125,58 +35,21 @@ function capitalize(str) {
     <p class="panel-subtitle">{{ nuværende.location }} · {{ nuværende.date }}</p>
 
     <div class="weather-row">
-      <!-- Vejr i dag -->
-      <div class="card" id="vejr-i-dag">
-        <h2>Vejr i dag</h2>
-        <div class="big-temp" id="temperatur">{{ Math.round(nuværende.temperatureC) }}<span>°C</span></div>
-        <div class="badge" id="vejr-beskrivelse">{{ capitalize(nuværende.description) }}</div>
-        <div class="weather-detail">
-          <span class="label">Fugtighed</span>
-          <strong id="fugtighed">{{ nuværende.humidity }} %</strong>
-        </div>
-        <div class="weather-detail">
-          <span class="label">Vind</span>
-          <strong>{{ nuværende.windSpeed }} km/t</strong>
-        </div>
-        <div class="weather-detail">
-          <span class="label">Nedbør</span>
-          <strong>{{ nuværende.precipitation }} mm</strong>
-        </div>
-      </div>
-
-      <!-- Vejr i går -->
-      <div class="card" id="vejr-i-gaar">
-        <h2>Vejr i går</h2>
-        <div class="big-temp">{{ Math.round(gårMiddag.temperatureC) }}<span>°C</span></div>
-        <div class="badge">{{ capitalize(gårMiddag.description) }}</div>
-        <div class="weather-detail">
-          <span class="label">Fugtighed</span>
-          <strong>{{ gårMiddag.humidity }} %</strong>
-        </div>
-        <div class="weather-detail">
-          <span class="label">Vind</span>
-          <strong>{{ gårMiddag.windSpeed }} km/t</strong>
-        </div>
-        <div class="weather-detail">
-          <span class="label">Nedbør</span>
-          <strong>{{ gårMiddag.precipitation }} mm</strong>
-        </div>
-      </div>
+      <WeatherCard
+        title="Vejr i dag"
+        section-id="vejr-i-dag"
+        :data="nuværende"
+        :is-today="true"
+      />
+      <WeatherCard
+        title="Vejr i går"
+        section-id="vejr-i-gaar"
+        :data="gårMiddag"
+      />
     </div>
 
-    <!-- Tøj anbefalet -->
-    <div class="card" id="toj-anbefalet">
-      <h2>Tøj anbefalet</h2>
-      <div class="clothing-list">
-        <span v-for="item in tøjListe" :key="item" class="clothing-item">{{ item }}</span>
-      </div>
-    </div>
-
-    <!-- Meddelelse om vejr -->
-    <div class="card" id="meddelelse-om-vejr">
-      <h2>Meddelelse omkring vejr</h2>
-      <p>{{ meddelelse }}</p>
-    </div>
+    <ClothingList :items="tøjListe" />
+    <WeatherMessage :text="meddelelse" />
 
     <span class="back-link" @click="visForside">← Søg nyt postnummer</span>
   </div>
