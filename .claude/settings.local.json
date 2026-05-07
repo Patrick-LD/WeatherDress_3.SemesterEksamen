@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\marcu\\\\OneDrive\\\\Skrivebord\\\\WeatherDress\\\\WeatherDress_3.SemesterEksamen\\\\frontend\" -Recurse)",
+      "Bash(Select-Object FullName, PSIsContainer)",
+      "Bash(Sort-Object FullName)",
+      "Bash(Format-Table -AutoSize)",
+      "Bash(ls -la \"c:\\\\Users\\\\marcu\\\\OneDrive\\\\Skrivebord\\\\WeatherDress\\\\WeatherDress_3.SemesterEksamen\\\\\" | head -20)",
+      "Read(//c/Users/marcu/OneDrive/Skrivebord/WeatherDress/**)",
+      "Bash(Get-ChildItem \"c:\\\\Users\\\\marcu\\\\OneDrive\\\\Skrivebord\\\\WeatherDress\\\\WeatherDress_3.SemesterEksamen\\\\frontend\\\\src\\\\assets\" -Recurse)",
+      "Bash(rm -rf \"/c/Users/marcu/OneDrive/Skrivebord/WeatherDress/WeatherDress_3.SemesterEksamen/frontend/src/assets\")",
+      "PowerShell(Remove-Item -Path \"c:\\\\Users\\\\marcu\\\\OneDrive\\\\Skrivebord\\\\WeatherDress\\\\WeatherDress_3.SemesterEksamen\\\\frontend\\\\src\\\\assets\" -Recurse -Force -Confirm:$false)",
+      "Bash(dir \"c:\\\\Users\\\\marcu\\\\OneDrive\\\\Skrivebord\\\\WeatherDress\\\\WeatherDress_3.SemesterEksamen\\\\frontend\\\\src\" /s /b)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\marcu\\OneDrive\\Skrivebord\\WeatherDress\\WeatherDress_3.SemesterEksamen\\frontend\\src\\assets"
+    ]
+  }
+}
