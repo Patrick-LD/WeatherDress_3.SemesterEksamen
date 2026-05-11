@@ -137,23 +137,24 @@ public class WeatherRepository : IWeatherRepository
         bool rainedYesterday = CheckedYesterdayForRain(lat, lon);
 
         // Jakke og bukser følger ALTID kun dagens vejr
-        var (jacketPos, jacketAngle, category, jacket, pants) = DetermineJacketAndPants(temp, code, rain);
+        var (clothingPos, clothingAngle, category, jacket, pants) = DetermineJacketAndPants(temp, code, rain);
 
         // Sko følger: regn i dag ELLER regn i går = gummistøvler
-        var (shoesPos, shoesAngle, shoes) = DetermineShoes(temp, code, rain, rainedYesterday);
+        var (shoesPos, shoesAngle, shoes, shoesNote) = DetermineShoes(temp, code, rain, rainedYesterday);
 
         return new ClothingRecommendation
         {
             Location = city,
-            JacketPosition = jacketPos,
-            JacketMotorAngle = jacketAngle,
+            JacketPosition = clothingPos,
+            JacketMotorAngle = clothingAngle,
             Jacket = jacket,
-            PantsPosition = jacketPos,
-            PantsMotorAngle = jacketAngle,
+            PantsPosition = clothingPos,
+            PantsMotorAngle = clothingAngle,
             Pants = pants,
             ShoesPosition = shoesPos,
             ShoesMotorAngle = shoesAngle,
             Shoes = shoes,
+            ShoesNote = shoesNote,
             WeatherCategory = category,
             CurrentTemperatureC = temp,
             CurrentDescription = description
@@ -196,10 +197,10 @@ public class WeatherRepository : IWeatherRepository
         DetermineJacketAndPants(double temp, int code, double precipitation)
     {
         if (IsSnowCode(code) || temp < 5)
-            return (4, 270, "Koldt/sne", "Vinterjakke", "Termobukser");
+            return (4, 270, "Koldt/sne", "Vinterjakke", "Flyverdragt");
 
         if (IsRainCode(code, precipitation))
-            return (3, 180, "Regn", "Regnjakke", "Regntøj");
+            return (3, 180, "Regn", "Regnjakke", "Flyverdragt");
 
         if (temp >= 20)
             return (1, 0, "Sol/varmt", "T-shirt", "Shorts");
@@ -207,18 +208,21 @@ public class WeatherRepository : IWeatherRepository
         return (2, 90, "Overskyet", "Hoodie", "Jeans");
     }
 
-    private static (int position, int angle, string shoes)
+    private static (int position, int angle, string shoes, string? note)
         DetermineShoes(double temp, int code, double precipitation, bool rainedYesterday)
     {
         if (IsSnowCode(code) || temp < 5)
-            return (4, 270, "Vinterstøvler");
+            return (4, 270, "Vinterstøvler", null);
 
-        if (IsRainCode(code, precipitation) || rainedYesterday)
-            return (3, 180, "Gummistøvler");
+        if (IsRainCode(code, precipitation))
+            return (3, 180, "Gummistøvler", null);
+
+        if (rainedYesterday)
+            return (3, 180, "Gummistøvler", "Det kan være en god idé at tage gummistøvler med, eftersom det regnede i går og det stadig kan være vådt udenfor.");
 
         if (temp >= 20)
-            return (1, 0, "Sandaler");
+            return (1, 0, "Sandaler", null);
 
-        return (2, 90, "Sneakers");
+        return (2, 90, "Sneakers", null);
     }
 }

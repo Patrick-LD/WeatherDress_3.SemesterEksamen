@@ -18,6 +18,7 @@ public class ClothingRecommendation
     public int ShoesPosition { get; set; }
     public int ShoesMotorAngle { get; set; }
     public string? Shoes { get; set; }
+    public string? ShoesNote { get; set; }
 
     public double CurrentTemperatureC { get; set; }
     public string? WeatherCategory { get; set; }
