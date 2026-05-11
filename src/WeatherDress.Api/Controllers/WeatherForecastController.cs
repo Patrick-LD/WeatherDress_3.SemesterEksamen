@@ -41,4 +41,18 @@ public class WeatherForecastController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
+    [HttpGet("{zipCode}/clothing-position")]
+    public IActionResult GetClothingPosition(string zipCode)
+    {
+        try
+        {
+            var recommendation = _weatherRepository.GetClothingRecommendation(zipCode);
+            return Ok(recommendation);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }
