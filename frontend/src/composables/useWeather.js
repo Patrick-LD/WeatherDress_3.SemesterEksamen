@@ -4,6 +4,14 @@ import { findNuværendeTime, findMiddag } from '../utils/format.js'
 import { beregnTøj } from '../utils/clothing.js'
 import { lavMeddelelse } from '../utils/weatherMessage.js'
 
+function setCookie(value) {
+  document.cookie = `postnummer=${value}; max-age=${30 * 24 * 60 * 60}; path=/; SameSite=Strict`
+}
+
+function getCookie() {
+  return document.cookie.split('; ').find(row => row.startsWith('postnummer='))?.split('=')[1] ?? ''
+}
+
 export function useWeather() {
   const postnummer = ref('')
   const loading = ref(false)
@@ -32,6 +40,7 @@ export function useWeather() {
       todayData.value = today
       yesterdayData.value = yesterday
       visPanel.value = true
+      setCookie(zip)
     } catch (err) {
       fejl.value = err.message
     } finally {
@@ -43,6 +52,12 @@ export function useWeather() {
     visPanel.value = false
     postnummer.value = ''
     fejl.value = ''
+  }
+
+  const gemt = getCookie()
+  if (gemt) {
+    postnummer.value = gemt
+    søgVejr()
   }
 
   return {
