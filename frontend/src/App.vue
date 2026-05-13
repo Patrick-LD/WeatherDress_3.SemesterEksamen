@@ -3,6 +3,7 @@ import InputForm from './components/InputForm.vue'
 import WeatherCard from './components/WeatherCard.vue'
 import ClothingList from './components/ClothingList.vue'
 import WeatherMessage from './components/WeatherMessage.vue'
+import MotorButton from './components/MotorButton.vue'
 import { useWeather } from './composables/useWeather.js'
 
 const {
@@ -50,6 +51,7 @@ const {
 
     <ClothingList :items="tøjListe" />
     <WeatherMessage :text="meddelelse" />
+    <MotorButton />
 
     <span class="back-link" @click="visForside">← Søg nyt postnummer</span>
   </div>

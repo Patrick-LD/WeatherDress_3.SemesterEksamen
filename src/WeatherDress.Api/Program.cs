@@ -11,6 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IWeatherDescriptionService, WeatherDescriptionService>();
+builder.Services.AddSingleton<IMotorTriggerService, MotorTriggerService>();
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
 
 var app = builder.Build();
