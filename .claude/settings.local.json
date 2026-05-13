@@ -10,7 +10,13 @@
       "Bash(Get-ChildItem \"c:\\\\Users\\\\marcu\\\\OneDrive\\\\Skrivebord\\\\WeatherDress\\\\WeatherDress_3.SemesterEksamen\\\\frontend\\\\src\\\\assets\" -Recurse)",
       "Bash(rm -rf \"/c/Users/marcu/OneDrive/Skrivebord/WeatherDress/WeatherDress_3.SemesterEksamen/frontend/src/assets\")",
       "PowerShell(Remove-Item -Path \"c:\\\\Users\\\\marcu\\\\OneDrive\\\\Skrivebord\\\\WeatherDress\\\\WeatherDress_3.SemesterEksamen\\\\frontend\\\\src\\\\assets\" -Recurse -Force -Confirm:$false)",
-      "Bash(dir \"c:\\\\Users\\\\marcu\\\\OneDrive\\\\Skrivebord\\\\WeatherDress\\\\WeatherDress_3.SemesterEksamen\\\\frontend\\\\src\" /s /b)"
+      "Bash(dir \"c:\\\\Users\\\\marcu\\\\OneDrive\\\\Skrivebord\\\\WeatherDress\\\\WeatherDress_3.SemesterEksamen\\\\frontend\\\\src\" /s /b)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\gusta\\\\Javascript\\\\WeatherDress_3.SemesterEksamen\" -Force | Select-Object Name, @{Name=\"Type\"; Expression={if\\($_.PSIsContainer\\){\"Folder\"}else{\"File\"}}} | Format-Table -AutoSize)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\gusta\\\\Javascript\\\\WeatherDress_3.SemesterEksamen\\\\src\" -Force | Select-Object Name, @{Name=\"Type\"; Expression={if\\($_.PSIsContainer\\){\"Folder\"}else{\"File\"}}} | Format-Table -AutoSize)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\gusta\\\\Javascript\\\\WeatherDress_3.SemesterEksamen\\\\src\\\\WeatherDress.Api\" -Force | Select-Object Name, @{Name=\"Type\"; Expression={if\\($_.PSIsContainer\\){\"Folder\"}else{\"File\"}}} | Format-Table -AutoSize)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\gusta\\\\Javascript\\\\WeatherDress_3.SemesterEksamen\\\\pi\" -Force | Select-Object Name, @{Name=\"Type\"; Expression={if\\($_.PSIsContainer\\){\"Folder\"}else{\"File\"}}} | Format-Table -AutoSize)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\gusta\\\\Javascript\\\\WeatherDress_3.SemesterEksamen\\\\src\\\\WeatherDress.Api\\\\wwwroot\" -Force | Select-Object Name, @{Name=\"Type\"; Expression={if\\($_.PSIsContainer\\){\"Folder\"}else{\"File\"}}} | Format-Table -AutoSize)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\gusta\\\\Javascript\\\\WeatherDress_3.SemesterEksamen\\\\frontend\" -Force | Select-Object Name, @{Name=\"Type\"; Expression={if\\($_.PSIsContainer\\){\"Folder\"}else{\"File\"}}} | Format-Table -AutoSize)"
     ],
     "additionalDirectories": [
       "C:\\Users\\marcu\\OneDrive\\Skrivebord\\WeatherDress\\WeatherDress_3.SemesterEksamen\\frontend\\src\\assets"
