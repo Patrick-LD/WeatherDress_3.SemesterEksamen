@@ -1,17 +1,32 @@
 <script setup>
+import { computed } from 'vue'
 import { capitalize } from '../utils/format.js'
+import SolIcon from './icons/SolIcon.vue'
+import RegnIcon from './icons/RegnIcon.vue'
+import SkyetIcon from './icons/SkyetIcon.vue'
+import SneIcon from './icons/SneIcon.vue'
 
-defineProps({
+const props = defineProps({
   title: { type: String, required: true },
   data: { type: Object, required: true },
   sectionId: { type: String, required: true },
   isToday: { type: Boolean, default: false }
+})
+
+const weatherIcon = computed(() => {
+  const desc = props.data.description?.toLowerCase() ?? ''
+  if (desc.includes('sne')) return SneIcon
+  if (desc.includes('regn') || desc.includes('støvregn') || desc.includes('torden')) return RegnIcon
+  if (desc.includes('skyet') || desc.includes('overskyet') || desc.includes('tåge')) return SkyetIcon
+  if (desc.includes('klar') || desc.includes('sol')) return SolIcon
+  return null
 })
 </script>
 
 <template>
   <div class="card" :id="sectionId">
     <h2>{{ title }}</h2>
+    <component :is="weatherIcon" v-if="weatherIcon" :size="64" class="weather-icon" />
     <div class="big-temp" :id="isToday ? 'temperatur' : null">
       {{ Math.round(data.temperatureC) }}<span>°C</span>
     </div>
