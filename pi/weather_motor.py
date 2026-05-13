@@ -55,6 +55,7 @@ ZIP_CODE = "2100"                               # Postnummer der slås op
 # Hastighed på motorerne — 0.002 sekunder mellem hvert skridt
 # Gør tallet STØRRE hvis motoren mister skridt (går i stå eller hakker)
 STEP_DELAY = 0.002
+POLL_INTERVAL = 2   # sekunder mellem hvert status-tjek
 
 
 # ==============================================================================
@@ -352,7 +353,31 @@ def main():
         print("\nFærdig. GPIO ryddet op.")
 
 
-# Denne linje sikrer at main() kun køres hvis vi starter filen direkte
-# (ikke hvis en anden fil importerer dette script)
+def tjek_trigger_status():
+    """Poller API'en og returnerer True hvis web-appen har trykket på knappen."""
+    url = f"{API_BASE_URL}/api/motor/status"
+    try:
+        with urllib.request.urlopen(url, timeout=5) as svar:
+            data = json.loads(svar.read().decode())
+            return data.get("triggered", False)
+    except Exception as fejl:
+        print(f"[Poll fejl] {fejl}")
+        return False
+
+
 if __name__ == "__main__":
-    main()
+    print("=" * 50)
+    print("WeatherDress — venter på trigger fra web-appen...")
+    print(f"Tjekker {API_BASE_URL}/api/motor/status hvert {POLL_INTERVAL} sek.")
+    print("Tryk Ctrl+C for at stoppe.")
+    print("=" * 50)
+
+    try:
+        while True:
+            if tjek_trigger_status():
+                print("\nTrigger modtaget! Starter motor-sekvens...")
+                main()
+                print("\nMotor-sekvens færdig. Venter på næste trigger...")
+            time.sleep(POLL_INTERVAL)
+    except KeyboardInterrupt:
+        print("\nStoppet af bruger.")
