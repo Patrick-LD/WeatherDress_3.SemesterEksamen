@@ -41,7 +41,7 @@ public class WeatherRepository : IWeatherRepository
         var (lat, lon, city) = GetCoordinates(zipCode);
         var today = DateTime.Now.ToString("yyyy-MM-dd");
 
-        var url = $"https://api.open-meteo.com/v1/forecast?latitude={lat.ToString(System.Globalization.CultureInfo.InvariantCulture)}&longitude={lon.ToString(System.Globalization.CultureInfo.InvariantCulture)}&hourly=temperature_2m,weathercode,windspeed_10m,relativehumidity_2m,precipitation&timezone=Europe%2FCopenhagen&forecast_days=1";
+        var url = $"https://api.open-meteo.com/v1/forecast?latitude={lat.ToString(System.Globalization.CultureInfo.InvariantCulture)}&longitude={lon.ToString(System.Globalization.CultureInfo.InvariantCulture)}&hourly=temperature_2m,weathercode,windspeed_10m,relativehumidity_2m,precipitation&timezone=Europe%2FCopenhagen&forecast_days=2";
         var response = _httpClient.GetAsync(url).Result;
         if (!response.IsSuccessStatusCode)
             throw new Exception($"Vejr API fejlede: {response.StatusCode}");
@@ -59,11 +59,12 @@ public class WeatherRepository : IWeatherRepository
 
         for (int i = 0; i < times.Count; i++)
         {
+            var timestamp = times[i].GetString()!;
             forecasts.Add(new WeatherForecast
             {
                 Location = city,
-                Date = today,
-                Time = times[i].GetString()!.Substring(11, 5),
+                Date = timestamp.Substring(0, 10),
+                Time = timestamp.Substring(11, 5),
                 TemperatureC = temps[i].GetDouble(),
                 Description = _descriptionService.GetDescription(codes[i].GetInt32()),
                 WindSpeed = winds[i].GetDouble(),

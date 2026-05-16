@@ -67,6 +67,7 @@ export function useWeather() {
     visPanel,
     nuværende,
     gårMiddag,
+    todayData,
     tøjListe,
     meddelelse,
     søgVejr,
