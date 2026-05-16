@@ -23,3 +23,7 @@ export async function triggerMotorer() {
   }
   return res.json()
 }
+
+export function hentAnbefalingHistorik(zip) {
+  return hentData(`/api/weatherforecast/${zip}/recommendation-history`)
+}
