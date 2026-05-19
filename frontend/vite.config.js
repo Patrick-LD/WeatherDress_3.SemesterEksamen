@@ -7,7 +7,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:5058',
+        target: 'https://weatherdress-api.azurewebsites.net',
         changeOrigin: true
       }
     }
