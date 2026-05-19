@@ -4,6 +4,7 @@ import WeatherCard from './components/WeatherCard.vue'
 import ClothingList from './components/ClothingList.vue'
 import WeatherMessage from './components/WeatherMessage.vue'
 import MotorButton from './components/MotorButton.vue'
+import HourlyForecast from './components/HourlyForecast.vue'
 import RecommendationHistory from './components/RecommendationHistory.vue'
 import { useWeather } from './composables/useWeather.js'
 
@@ -14,6 +15,7 @@ const {
   visPanel,
   nuværende,
   gårMiddag,
+  todayData,
   tøjListe,
   meddelelse,
   søgVejr,
@@ -37,19 +39,21 @@ const {
     <p class="panel-subtitle">{{ nuværende.location }} · {{ nuværende.date }}</p>
 
     <div class="weather-row">
-      <WeatherCard
-        title="Vejr i dag"
-        section-id="vejr-i-dag"
-        :data="nuværende"
-        :is-today="true"
-      />
+      <div class="today-stack">
+        <WeatherCard
+          title="Vejr i dag"
+          section-id="vejr-i-dag"
+          :data="nuværende"
+          :is-today="true"
+        />
+        <HourlyForecast :data="todayData" />
+      </div>
       <WeatherCard
         title="Vejr i går"
         section-id="vejr-i-gaar"
         :data="gårMiddag"
       />
     </div>
-
     <ClothingList :items="tøjListe" />
     <WeatherMessage :text="meddelelse" />
     <MotorButton />
@@ -62,14 +66,16 @@ const {
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+#app { width: 90%; }
+
 body {
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #74b9e7 0%, #d6eaf8 100%);
-  min-height: 100vh;
+  min-height: 10vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 24px 0;
 }
 
 /* ── Forside ── */
@@ -139,7 +145,7 @@ body {
 /* ── Resultat-panel ── */
 #weatherdress-panel {
   width: 100%;
-  max-width: 800px;
+  padding: 0 16px;
 }
 
 #weatherdress-panel > h1 {
@@ -159,7 +165,7 @@ body {
 
 .weather-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(380px, 1fr) minmax(380px, 1fr);
   gap: 16px;
   margin-bottom: 16px;
 }
@@ -167,7 +173,7 @@ body {
 .card {
   background: white;
   border-radius: 14px;
-  padding: 20px 24px;
+  padding: 28px 40px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.10);
   margin-bottom: 16px;
 }
@@ -181,7 +187,13 @@ body {
   margin-bottom: 14px;
 }
 
-.weather-row .card { margin-bottom: 0; }
+.weather-row .card { margin-bottom: 0; padding: 28px 64px; }
+
+.today-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 
 .big-temp {
   font-size: 3rem;
