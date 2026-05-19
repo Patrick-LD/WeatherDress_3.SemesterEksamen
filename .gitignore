@@ -6,6 +6,14 @@
 # Claude Code worktrees (temporary isolated working directories)
 .claude/worktrees/
 
+# Claude Code local settings (machine-specific, may contain secrets)
+.claude/settings.local.json
+
+# Azure deployment artifacts
+app-logs/
+app-logs*/
+publish.zip
+
 # dotenv files
 .env
 
