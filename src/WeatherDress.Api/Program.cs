@@ -1,10 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+using WeatherDress.Api.Data;
 using WeatherDress.Api.Repositories;
 using WeatherDress.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -13,8 +13,18 @@ builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IWeatherDescriptionService, WeatherDescriptionService>();
 builder.Services.AddSingleton<IMotorTriggerService, MotorTriggerService>();
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
+builder.Services.AddDbContext<WeatherDressDbContext>(opt =>
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IRecommendationHistoryRepository, RecommendationHistoryRepository>();
+builder.Services.AddHostedService<DailyRecommendationBackgroundService>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<WeatherDressDbContext>();
+    db.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
