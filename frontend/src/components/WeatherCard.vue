@@ -10,7 +10,8 @@ const props = defineProps({
   title: { type: String, required: true },
   data: { type: Object, required: true },
   sectionId: { type: String, required: true },
-  isToday: { type: Boolean, default: false }
+  isToday: { type: Boolean, default: false },
+  iconSize: { type: Number, default: 64 }
 })
 
 const weatherIcon = computed(() => {
@@ -26,7 +27,7 @@ const weatherIcon = computed(() => {
 <template>
   <div class="card" :id="sectionId">
     <h2>{{ title }}</h2>
-    <component :is="weatherIcon" v-if="weatherIcon" :size="64" class="weather-icon" />
+    <component :is="weatherIcon" v-if="weatherIcon" :size="iconSize" class="weather-icon" />
     <div class="big-temp" :id="isToday ? 'temperatur' : null">
       {{ Math.round(data.temperatureC) }}<span>°C</span>
     </div>

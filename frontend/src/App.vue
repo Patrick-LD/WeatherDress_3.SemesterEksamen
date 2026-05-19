@@ -38,25 +38,27 @@ const {
     <h1>WeatherDress</h1>
     <p class="panel-subtitle">{{ nuværende.location }} · {{ nuværende.date }}</p>
 
-    <div class="weather-row">
-      <div class="today-stack">
-        <WeatherCard
-          title="Vejr i dag"
-          section-id="vejr-i-dag"
-          :data="nuværende"
-          :is-today="true"
-        />
-        <HourlyForecast :data="todayData" />
-      </div>
+    <div class="weather-grid">
+      <WeatherCard
+        title="Vejr i dag"
+        section-id="vejr-i-dag"
+        :data="nuværende"
+        :is-today="true"
+      />
       <WeatherCard
         title="Vejr i går"
         section-id="vejr-i-gaar"
         :data="gårMiddag"
+        :icon-size="48"
+        class="yesterday-card"
       />
+      <div class="forecast-message-row">
+        <HourlyForecast :data="todayData" />
+        <WeatherMessage :text="meddelelse" />
+      </div>
+      <MotorButton />
     </div>
     <ClothingList :items="tøjListe" />
-    <WeatherMessage :text="meddelelse" />
-    <MotorButton />
     <RecommendationHistory :zip-code="postnummer" />
 
     <span class="back-link" @click="visForside">← Søg nyt postnummer</span>
@@ -163,12 +165,20 @@ body {
   font-size: 0.95rem;
 }
 
-.weather-row {
+.weather-grid {
   display: grid;
-  grid-template-columns: minmax(380px, 1fr) minmax(380px, 1fr);
+  grid-template-columns: minmax(380px, 2fr) minmax(220px, 1fr);
+  grid-template-areas:
+    "today    yesterday"
+    "forecast motor";
   gap: 16px;
   margin-bottom: 16px;
 }
+
+#vejr-i-dag           { grid-area: today; }
+#vejr-i-gaar          { grid-area: yesterday; }
+.forecast-message-row { grid-area: forecast; }
+#motor-styring        { grid-area: motor; }
 
 .card {
   background: white;
@@ -187,12 +197,38 @@ body {
   margin-bottom: 14px;
 }
 
-.weather-row .card { margin-bottom: 0; padding: 28px 64px; }
+.weather-grid .card { margin-bottom: 0; padding: 28px 40px; }
 
-.today-stack {
+.forecast-message-row {
   display: flex;
-  flex-direction: column;
   gap: 16px;
+  align-items: stretch;
+}
+
+.forecast-message-row > * {
+  flex: 1;
+  min-width: 0;
+}
+
+.forecast-message-row #hourly-forecast {
+  flex: 1.8;
+}
+
+.forecast-message-row #meddelelse-om-vejr {
+  flex: 1;
+}
+
+.yesterday-card.card {
+  padding: 20px 24px;
+}
+
+.yesterday-card .big-temp {
+  font-size: 2.2rem;
+}
+
+.yesterday-card .weather-icon {
+  width: 48px;
+  height: 48px;
 }
 
 .big-temp {
