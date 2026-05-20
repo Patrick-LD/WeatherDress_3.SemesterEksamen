@@ -26,10 +26,11 @@ def setup():
             GPIO.setup(pin, GPIO.OUT)
             GPIO.output(pin, GPIO.LOW)
 
-def kør_motor(pins, steps=512, delay=0.002):
+def kør_motor(pins, steps=512, delay=0.002, reverse=False):
+    sekvens = HALF_STEP[::-1] if reverse else HALF_STEP
     for _ in range(steps):
-        for sekvens in HALF_STEP:
-            for pin, val in zip(pins, sekvens):
+        for trin in sekvens:
+            for pin, val in zip(pins, trin):
                 GPIO.output(pin, GPIO.HIGH if val else GPIO.LOW)
             time.sleep(delay)
     for pin in pins:
@@ -53,7 +54,7 @@ def main():
                 print("Signal modtaget! Starter motorer...")
                 kør_motor(JAKKE_PINS)
                 kør_motor(BUKSER_PINS)
-                kør_motor(SKO_PINS)
+                kør_motor(SKO_PINS, reverse=True)
                 print("Færdig.")
             time.sleep(2)
     except KeyboardInterrupt:
