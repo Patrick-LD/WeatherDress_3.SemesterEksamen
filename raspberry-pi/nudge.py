@@ -1,9 +1,9 @@
 import lgpio
 import time
 
-BUKSER_PINS = [17, 27, 22, 23]
-SKO_PINS    = [6, 13, 19, 26]
-JAKKE_PINS  = [24, 25, 8, 7]
+BUKSER_PINS = [17, 27, 22, 23]  # BOARD 11,13,15,16
+SKO_PINS    = [24, 25, 8, 7]    # BOARD 18,22,24,26
+JAKKE_PINS  = [6, 13, 19, 26]   # BOARD 31,33,35,37
 
 HALF_STEP = [
     [1,0,0,0],[1,1,0,0],[0,1,0,0],[0,1,1,0],
