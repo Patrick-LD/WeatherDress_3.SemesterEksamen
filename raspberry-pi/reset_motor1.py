@@ -1,24 +1,27 @@
-import RPi.GPIO as GPIO
+import lgpio
 import time
 
-PINS = [11, 13, 15, 16]
-HS = [
+# BCM pins for Motor 1 Bukser (BOARD 18,22,24,26)
+PINS = [24, 25, 8, 7]
+
+HALF_STEP = [
     [1,0,0,0],[1,1,0,0],[0,1,0,0],[0,1,1,0],
     [0,0,1,0],[0,0,1,1],[0,0,0,1],[1,0,0,1],
 ]
 
-GPIO.setmode(GPIO.BOARD)
+h = lgpio.gpiochip_open(0)
 for p in PINS:
-    GPIO.setup(p, GPIO.OUT)
-    GPIO.output(p, GPIO.LOW)
+    lgpio.gpio_claim_output(h, p, 0)
 
-for _ in range(384):
-    for trin in HS:
-        for pin, val in zip(PINS, trin):
-            GPIO.output(pin, GPIO.HIGH if val else GPIO.LOW)
-        time.sleep(0.002)
+try:
+    for _ in range(384):
+        for trin in HALF_STEP:
+            for pin, val in zip(PINS, trin):
+                lgpio.gpio_write(h, pin, val)
+            time.sleep(0.002)
+finally:
+    for p in PINS:
+        lgpio.gpio_write(h, p, 0)
+    lgpio.gpiochip_close(h)
 
-for p in PINS:
-    GPIO.output(p, GPIO.LOW)
-GPIO.cleanup()
 print("Faerdig")

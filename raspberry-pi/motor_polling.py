@@ -1,12 +1,13 @@
-import RPi.GPIO as GPIO
+import lgpio
 import requests
 import time
 
 API_STATUS = "https://weatherdress-api.azurewebsites.net/api/motor/status"
 
-JAKKE_PINS  = [11, 13, 15, 16]
-BUKSER_PINS = [18, 22, 24, 26]
-SKO_PINS    = [29, 31, 33, 35]
+# BCM pin numbers
+BUKSER_PINS = [24, 25, 8, 7]    # Motor 1 - BOARD 18,22,24,26
+JAKKE_PINS  = [17, 27, 22, 23]  # Motor 2 - BOARD 11,13,15,16
+SKO_PINS    = [5, 6, 13, 19]    # Motor 3 - BOARD 29,31,33,35
 
 FULD_OMDREJNING = 512
 
@@ -21,29 +22,20 @@ HALF_STEP = [
     [1, 0, 0, 1],
 ]
 
-def setup():
-    GPIO.setmode(GPIO.BOARD)
-    for pins in [JAKKE_PINS, BUKSER_PINS, SKO_PINS]:
-        for pin in pins:
-            GPIO.setup(pin, GPIO.OUT)
-            GPIO.output(pin, GPIO.LOW)
-
-def _kør_skridt(pins, steps, sekvens, delay):
+def kør_skridt(h, pins, steps, reverse=False):
+    sekvens = HALF_STEP[::-1] if reverse else HALF_STEP
     for _ in range(steps):
         for trin in sekvens:
             for pin, val in zip(pins, trin):
-                GPIO.output(pin, GPIO.HIGH if val else GPIO.LOW)
-            time.sleep(delay)
+                lgpio.gpio_write(h, pin, val)
+            time.sleep(0.002)
     for pin in pins:
-        GPIO.output(pin, GPIO.LOW)
+        lgpio.gpio_write(h, pin, 0)
 
-def kør_motor(pins, steps=512, delay=0.002, reverse=False, pause=3):
-    sekvens = HALF_STEP[::-1] if reverse else HALF_STEP
-    retur_skridt = FULD_OMDREJNING - steps
-
-    _kør_skridt(pins, steps, sekvens, delay)
+def kør_motor(h, pins, steps=64, reverse=False, pause=3):
+    kør_skridt(h, pins, steps, reverse)
     time.sleep(pause)
-    _kør_skridt(pins, retur_skridt, sekvens, delay)
+    kør_skridt(h, pins, FULD_OMDREJNING - steps, reverse)
 
 def tjek_trigger():
     try:
@@ -55,21 +47,28 @@ def tjek_trigger():
     return False
 
 def main():
-    setup()
+    h = lgpio.gpiochip_open(0)
+    for pins in [BUKSER_PINS, JAKKE_PINS, SKO_PINS]:
+        for p in pins:
+            lgpio.gpio_claim_output(h, p, 0)
+
     print("Klar — venter på signal fra WeatherDress...")
     try:
         while True:
             if tjek_trigger():
                 print("Signal modtaget! Starter motorer...")
-                kør_motor(JAKKE_PINS)
-                kør_motor(BUKSER_PINS)
-                kør_motor(SKO_PINS, reverse=True)
+                kør_motor(h, BUKSER_PINS, steps=64)
+                kør_motor(h, JAKKE_PINS, steps=64)
+                kør_motor(h, SKO_PINS, steps=64, reverse=True)
                 print("Færdig.")
             time.sleep(2)
     except KeyboardInterrupt:
         print("\nStoppet.")
     finally:
-        GPIO.cleanup()
+        for pins in [BUKSER_PINS, JAKKE_PINS, SKO_PINS]:
+            for p in pins:
+                lgpio.gpio_write(h, p, 0)
+        lgpio.gpiochip_close(h)
 
 if __name__ == "__main__":
     main()
