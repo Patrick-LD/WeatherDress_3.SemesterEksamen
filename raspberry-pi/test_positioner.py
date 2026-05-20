@@ -1,8 +1,5 @@
 import lgpio
-import requests
 import time
-
-API_STATUS = "https://weatherdress-api.azurewebsites.net/api/motor/status"
 
 # BCM pin numbers
 BUKSER_PINS = [24, 25, 8, 7]    # Motor 1 - BOARD 18,22,24,26
@@ -32,19 +29,21 @@ def kør_skridt(h, pins, steps, reverse=False):
     for pin in pins:
         lgpio.gpio_write(h, pin, 0)
 
-def kør_motor(h, pins, steps=64, reverse=False, pause=3):
-    kør_skridt(h, pins, steps, reverse)
-    time.sleep(pause)
-    kør_skridt(h, pins, FULD_OMDREJNING - steps, reverse)
+def test_motor(h, navn, pins, reverse=False):
+    print(f"\n=== {navn} ===")
+    print("Sørg for at pilen er på HOME inden du trykker Enter.")
+    input("Tryk Enter for at starte...")
 
-def tjek_trigger():
-    try:
-        r = requests.get(API_STATUS, timeout=5)
-        if r.ok:
-            return r.json().get("triggered", False)
-    except Exception as e:
-        print(f"API fejl: {e}")
-    return False
+    for pos in [64, 192, 320, 448]:
+        print(f"\nKører til position {pos} skridt...")
+        kør_skridt(h, pins, pos, reverse)
+        item = input(f"Hvad peger pilen på ved {pos} skridt? Skriv her: ")
+        print(f"  → Position {pos}: {item}")
+        print("Kører tilbage til home...")
+        kør_skridt(h, pins, FULD_OMDREJNING - pos, reverse)
+        time.sleep(1)
+
+    print(f"\n{navn} færdig.")
 
 def main():
     h = lgpio.gpiochip_open(0)
@@ -52,18 +51,13 @@ def main():
         for p in pins:
             lgpio.gpio_claim_output(h, p, 0)
 
-    print("Klar — venter på signal fra WeatherDress...")
     try:
-        while True:
-            if tjek_trigger():
-                print("Signal modtaget! Starter motorer...")
-                kør_motor(h, BUKSER_PINS, steps=64)
-                kør_motor(h, JAKKE_PINS, steps=64)
-                kør_motor(h, SKO_PINS, steps=64, reverse=True)
-                print("Færdig.")
-            time.sleep(2)
+        test_motor(h, "BUKSER (Motor 1)", BUKSER_PINS, reverse=False)
+        test_motor(h, "JAKKE/OVERTØJ (Motor 2)", JAKKE_PINS, reverse=False)
+        test_motor(h, "SKO/FODTØJ (Motor 3)", SKO_PINS, reverse=True)
+        print("\nAlle motorer testet.")
     except KeyboardInterrupt:
-        print("\nStoppet.")
+        print("\nAfbrudt.")
     finally:
         for pins in [BUKSER_PINS, JAKKE_PINS, SKO_PINS]:
             for p in pins:

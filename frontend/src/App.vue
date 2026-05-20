@@ -1,7 +1,6 @@
 <script setup>
 import InputForm from './components/InputForm.vue'
 import WeatherCard from './components/WeatherCard.vue'
-import ClothingList from './components/ClothingList.vue'
 import WeatherMessage from './components/WeatherMessage.vue'
 import MotorButton from './components/MotorButton.vue'
 import HourlyForecast from './components/HourlyForecast.vue'
@@ -44,6 +43,7 @@ const {
         section-id="vejr-i-dag"
         :data="nuværende"
         :is-today="true"
+        :items="tøjListe"
       />
       <WeatherCard
         title="Vejr i går"
@@ -58,7 +58,6 @@ const {
       </div>
       <MotorButton />
     </div>
-    <ClothingList :items="tøjListe" />
     <RecommendationHistory :zip-code="postnummer" />
 
     <span class="back-link" @click="visForside">← Søg nyt postnummer</span>
