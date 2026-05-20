@@ -8,6 +8,8 @@ JAKKE_PINS  = [11, 13, 15, 16]
 BUKSER_PINS = [18, 22, 24, 26]
 SKO_PINS    = [29, 31, 33, 35]
 
+FULD_OMDREJNING = 4096
+
 HALF_STEP = [
     [1, 0, 0, 0],
     [1, 1, 0, 0],
@@ -26,8 +28,7 @@ def setup():
             GPIO.setup(pin, GPIO.OUT)
             GPIO.output(pin, GPIO.LOW)
 
-def kør_motor(pins, steps=512, delay=0.002, reverse=False):
-    sekvens = HALF_STEP[::-1] if reverse else HALF_STEP
+def _kør_skridt(pins, steps, sekvens, delay):
     for _ in range(steps):
         for trin in sekvens:
             for pin, val in zip(pins, trin):
@@ -35,6 +36,14 @@ def kør_motor(pins, steps=512, delay=0.002, reverse=False):
             time.sleep(delay)
     for pin in pins:
         GPIO.output(pin, GPIO.LOW)
+
+def kør_motor(pins, steps=512, delay=0.002, reverse=False, pause=3):
+    sekvens = HALF_STEP[::-1] if reverse else HALF_STEP
+    retur_skridt = FULD_OMDREJNING - steps
+
+    _kør_skridt(pins, steps, sekvens, delay)
+    time.sleep(pause)
+    _kør_skridt(pins, retur_skridt, sekvens, delay)
 
 def tjek_trigger():
     try:
