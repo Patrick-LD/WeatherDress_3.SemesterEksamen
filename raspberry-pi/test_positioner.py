@@ -40,7 +40,7 @@ def test_motor(navn, pins, reverse=False):
     print("Sørg for at pilen er på HOME inden du trykker Enter.")
     input("Tryk Enter for at starte...")
 
-    for pos in [128, 256, 384]:
+    for pos in [64, 192, 320, 448]:
         print(f"\nKører til position {pos} skridt...")
         kør_skridt(pins, pos, reverse)
         item = input(f"Hvad peger pilen på ved {pos} skridt? Skriv her: ")
