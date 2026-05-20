@@ -1,8 +1,8 @@
 import lgpio
 import time
 
-# BCM pins for Motor 3 Sko (BOARD 29,31,33,35)
-PINS = [5, 6, 13, 19]
+# BCM pins for Motor 3 Sko (BOARD 31,33,35,37)
+PINS = [6, 13, 19, 26]
 
 HALF_STEP = [
     [1,0,0,0],[1,1,0,0],[0,1,0,0],[0,1,1,0],

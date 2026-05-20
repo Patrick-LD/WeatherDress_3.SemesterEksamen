@@ -4,7 +4,7 @@ import time
 # BCM pin numbers
 BUKSER_PINS = [17, 27, 22, 23]  # Motor 1 - BOARD 11,13,15,16
 JAKKE_PINS  = [24, 25, 8, 7]    # Motor 2 - BOARD 18,22,24,26
-SKO_PINS    = [5, 6, 13, 19]    # Motor 3 - BOARD 29,31,33,35
+SKO_PINS    = [6, 13, 19, 26]   # Motor 3 - BOARD 31,33,35,37
 
 FULD_OMDREJNING = 512
 
