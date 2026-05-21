@@ -1,3 +1,5 @@
+const API_BASE = import.meta.env.VITE_API_BASE ?? ''
+
 export async function hentData(url) {
   const res = await fetch(url)
   if (!res.ok) {
@@ -8,15 +10,15 @@ export async function hentData(url) {
 }
 
 export function hentVejrToday(zip) {
-  return hentData(`/api/weatherforecast/${zip}/today`)
+  return hentData(`${API_BASE}/api/weatherforecast/${zip}/today`)
 }
 
 export function hentVejrYesterday(zip) {
-  return hentData(`/api/weatherforecast/${zip}/yesterday`)
+  return hentData(`${API_BASE}/api/weatherforecast/${zip}/yesterday`)
 }
 
 export async function triggerMotorer() {
-  const res = await fetch('/api/motor/trigger', { method: 'POST' })
+  const res = await fetch(`${API_BASE}/api/motor/trigger`, { method: 'POST' })
   if (!res.ok) {
     const tekst = await res.text()
     throw new Error(tekst || `Fejl fra server (${res.status})`)
@@ -25,9 +27,9 @@ export async function triggerMotorer() {
 }
 
 export function hentAnbefalingHistorik(zip) {
-  return hentData(`/api/weatherforecast/${zip}/recommendation-history`)
+  return hentData(`${API_BASE}/api/weatherforecast/${zip}/recommendation-history`)
 }
 
 export function gemDagsAnbefaling(zip) {
-  return hentData(`/api/weatherforecast/${zip}/clothing-position`)
+  return hentData(`${API_BASE}/api/weatherforecast/${zip}/clothing-position`)
 }
