@@ -14,6 +14,9 @@ import VarmJakkeIcon from './icons/VarmJakkeIcon.vue'
 import VinterjakkeIcon from './icons/VinterjakkeIcon.vue'
 import HueHandskerIcon from './icons/HueHandskerIcon.vue'
 import StovlerIcon from './icons/StovlerIcon.vue'
+import GummistovlerIcon from './icons/GummistovlerIcon.vue'
+import SandlerIcon from './icons/SandlerIcon.vue'
+import SneakersIcon from './icons/SneakersIcon.vue'
 import ParaplyIcon from './icons/ParaplyIcon.vue'
 import VindjakkeIcon from './icons/VindjakkeIcon.vue'
 
@@ -27,6 +30,9 @@ const clothingIcons = {
   'Tyk vinterjakke': VinterjakkeIcon,
   'Hue og handsker': HueHandskerIcon,
   'Vinterstøvler': StovlerIcon,
+  'Gummistøvler': GummistovlerIcon,
+  'Sandaler': SandlerIcon,
+  'Sneakers': SneakersIcon,
   'Regnjakke / paraply': ParaplyIcon,
   'Vindjakke': VindjakkeIcon
 }
