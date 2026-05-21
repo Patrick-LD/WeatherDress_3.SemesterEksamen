@@ -8,7 +8,8 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'https://weatherdress-api.azurewebsites.net',
-        changeOrigin: true
+        changeOrigin: true,
+        secure: false
       }
     }
   }
