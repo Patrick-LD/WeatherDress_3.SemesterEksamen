@@ -44,7 +44,6 @@ public class WeatherDressUITests
 
         var input = _driver.FindElement(By.Id("postnummer-input"));
 
-        input.Should().NotBeNull();
         input.Displayed.Should().BeTrue();
     }
 
@@ -187,6 +186,133 @@ public class WeatherDressUITests
         var panels = _driver.FindElements(By.Id("weatherdress-panel"));
 
         panels.Should().BeEmpty();
+    }
+
+    // --- Vejr i går: indhold ---
+
+    [Test]
+    public void VejrIGaar_IndeholderTemperatur()
+    {
+        _driver.Navigate().GoToUrl(BaseUrl);
+        IndtastPostnummerOgSend(ValidPostnummer);
+
+        var sektion = VentPaaElement(By.Id("vejr-i-gaar"));
+        var temperatur = sektion.FindElement(By.Id("temperatur-igaar"));
+
+        temperatur.Text.Should().NotBeNullOrWhiteSpace();
+    }
+
+    [Test]
+    public void VejrIGaar_IndeholderFugtighed()
+    {
+        _driver.Navigate().GoToUrl(BaseUrl);
+        IndtastPostnummerOgSend(ValidPostnummer);
+
+        var sektion = VentPaaElement(By.Id("vejr-i-gaar"));
+        var fugtighed = sektion.FindElement(By.Id("fugtighed-igaar"));
+
+        fugtighed.Text.Should().NotBeNullOrWhiteSpace();
+    }
+
+    [Test]
+    public void VejrIGaar_IndeholderVejrbeskrivelse()
+    {
+        _driver.Navigate().GoToUrl(BaseUrl);
+        IndtastPostnummerOgSend(ValidPostnummer);
+
+        var sektion = VentPaaElement(By.Id("vejr-i-gaar"));
+        var beskrivelse = sektion.FindElement(By.Id("vejr-beskrivelse-igaar"));
+
+        beskrivelse.Text.Should().NotBeNullOrWhiteSpace();
+    }
+
+    // --- Vejr i dag: vindstyrke og nedbør ---
+
+    [Test]
+    public void VejrIDag_IndeholderVindstyrke()
+    {
+        _driver.Navigate().GoToUrl(BaseUrl);
+        IndtastPostnummerOgSend(ValidPostnummer);
+
+        var sektion = VentPaaElement(By.Id("vejr-i-dag"));
+        var vindstyrke = sektion.FindElement(By.Id("vindstyrke"));
+
+        vindstyrke.Text.Should().NotBeNullOrWhiteSpace();
+    }
+
+    [Test]
+    public void VejrIDag_IndeholderNedbor()
+    {
+        _driver.Navigate().GoToUrl(BaseUrl);
+        IndtastPostnummerOgSend(ValidPostnummer);
+
+        var sektion = VentPaaElement(By.Id("vejr-i-dag"));
+        var nedbor = sektion.FindElement(By.Id("nedbor"));
+
+        nedbor.Text.Should().NotBeNullOrWhiteSpace();
+    }
+
+    // --- Tøjanbefaling ---
+
+    [Test]
+    public void VejrIDag_ViserTojAnbefalinger()
+    {
+        _driver.Navigate().GoToUrl(BaseUrl);
+        IndtastPostnummerOgSend(ValidPostnummer);
+
+        VentPaaElement(By.Id("vejr-i-dag"));
+        var tojItems = _driver.FindElements(By.CssSelector("#vejr-i-dag .clothing-panel-item"));
+
+        tojItems.Should().NotBeEmpty();
+    }
+
+    [Test]
+    public void VejrIDag_TojAnbefalingerHarTekstindhold()
+    {
+        _driver.Navigate().GoToUrl(BaseUrl);
+        IndtastPostnummerOgSend(ValidPostnummer);
+
+        VentPaaElement(By.Id("vejr-i-dag"));
+        var foersteItem = _driver.FindElement(By.CssSelector("#vejr-i-dag .clothing-panel-item"));
+
+        foersteItem.Text.Should().NotBeNullOrWhiteSpace();
+    }
+
+    // --- Hourly forecast og motor ---
+
+    [Test]
+    public void GyldigtPostnummer_ViserHourlyForecast()
+    {
+        _driver.Navigate().GoToUrl(BaseUrl);
+        IndtastPostnummerOgSend(ValidPostnummer);
+
+        var sektion = VentPaaElement(By.Id("hourly-forecast"));
+
+        sektion.Displayed.Should().BeTrue();
+    }
+
+    [Test]
+    public void GyldigtPostnummer_ViserMotorStyringKnap()
+    {
+        _driver.Navigate().GoToUrl(BaseUrl);
+        IndtastPostnummerOgSend(ValidPostnummer);
+
+        var motor = VentPaaElement(By.Id("motor-styring"));
+
+        motor.Displayed.Should().BeTrue();
+    }
+
+    // --- Anbefalingshistorik ---
+
+    [Test]
+    public void GyldigtPostnummer_ViserAnbefalingsHistorik()
+    {
+        _driver.Navigate().GoToUrl(BaseUrl);
+        IndtastPostnummerOgSend(ValidPostnummer);
+
+        var historik = VentPaaElement(By.Id("anbefaling-historik"));
+
+        historik.Displayed.Should().BeTrue();
     }
 
     // --- Hjælpemetoder ---
