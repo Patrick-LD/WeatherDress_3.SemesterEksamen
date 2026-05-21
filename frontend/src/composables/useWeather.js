@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue'
-import { hentVejrToday, hentVejrYesterday } from '../services/weatherApi.js'
+import { hentVejrToday, hentVejrYesterday, gemDagsAnbefaling } from '../services/weatherApi.js'
 import { findNuværendeTime, findMiddag } from '../utils/format.js'
 import { beregnTøj } from '../utils/clothing.js'
 import { lavMeddelelse } from '../utils/weatherMessage.js'
@@ -41,6 +41,7 @@ export function useWeather() {
       yesterdayData.value = yesterday
       visPanel.value = true
       setCookie(zip)
+      gemDagsAnbefaling(zip).catch(() => {})
     } catch (err) {
       fejl.value = err.message
     } finally {

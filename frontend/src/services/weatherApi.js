@@ -27,3 +27,7 @@ export async function triggerMotorer() {
 export function hentAnbefalingHistorik(zip) {
   return hentData(`/api/weatherforecast/${zip}/recommendation-history`)
 }
+
+export function gemDagsAnbefaling(zip) {
+  return hentData(`/api/weatherforecast/${zip}/clothing-position`)
+}
