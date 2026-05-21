@@ -5,6 +5,37 @@ import SolIcon from './icons/SolIcon.vue'
 import RegnIcon from './icons/RegnIcon.vue'
 import SkyetIcon from './icons/SkyetIcon.vue'
 import SneIcon from './icons/SneIcon.vue'
+import TshirtIcon from './icons/TshirtIcon.vue'
+import LangaermetIcon from './icons/LangaermetIcon.vue'
+import LetJakkeIcon from './icons/LetJakkeIcon.vue'
+import JakkeIcon from './icons/JakkeIcon.vue'
+import SweaterIcon from './icons/SweaterIcon.vue'
+import VarmJakkeIcon from './icons/VarmJakkeIcon.vue'
+import VinterjakkeIcon from './icons/VinterjakkeIcon.vue'
+import HueHandskerIcon from './icons/HueHandskerIcon.vue'
+import StovlerIcon from './icons/StovlerIcon.vue'
+import GummistovlerIcon from './icons/GummistovlerIcon.vue'
+import SandlerIcon from './icons/SandlerIcon.vue'
+import SneakersIcon from './icons/SneakersIcon.vue'
+import ParaplyIcon from './icons/ParaplyIcon.vue'
+import VindjakkeIcon from './icons/VindjakkeIcon.vue'
+
+const clothingIcons = {
+  'T-shirt': TshirtIcon,
+  'Langærmet trøje': LangaermetIcon,
+  'Let jakke': LetJakkeIcon,
+  'Jakke': JakkeIcon,
+  'Sweater': SweaterIcon,
+  'Varm jakke': VarmJakkeIcon,
+  'Tyk vinterjakke': VinterjakkeIcon,
+  'Hue og handsker': HueHandskerIcon,
+  'Vinterstøvler': StovlerIcon,
+  'Gummistøvler': GummistovlerIcon,
+  'Sandaler': SandlerIcon,
+  'Sneakers': SneakersIcon,
+  'Regnjakke / paraply': ParaplyIcon,
+  'Vindjakke': VindjakkeIcon
+}
 
 const props = defineProps({
   title: { type: String, required: true },
@@ -31,30 +62,33 @@ const weatherIcon = computed(() => {
     <div :class="items.length ? 'card-inner' : ''">
       <div class="weather-info">
         <component :is="weatherIcon" v-if="weatherIcon" :size="iconSize" class="weather-icon" />
-        <div class="big-temp" :id="isToday ? 'temperatur' : null">
+        <div class="big-temp" :id="isToday ? 'temperatur' : 'temperatur-igaar'">
           {{ Math.round(data.temperatureC) }}<span>°C</span>
         </div>
-        <div class="badge" :id="isToday ? 'vejr-beskrivelse' : null">
+        <div class="badge" :id="isToday ? 'vejr-beskrivelse' : 'vejr-beskrivelse-igaar'">
           {{ capitalize(data.description) }}
         </div>
         <div class="weather-detail">
           <span class="label">Fugtighed</span>
-          <strong :id="isToday ? 'fugtighed' : null">{{ data.humidity }} %</strong>
+          <strong :id="isToday ? 'fugtighed' : 'fugtighed-igaar'">{{ data.humidity }} %</strong>
         </div>
         <div class="weather-detail">
           <span class="label">Vind</span>
-          <strong>{{ data.windSpeed }} km/t</strong>
+          <strong :id="isToday ? 'vindstyrke' : 'vindstyrke-igaar'">{{ data.windSpeed }} km/t</strong>
         </div>
         <div class="weather-detail">
           <span class="label">Nedbør</span>
-          <strong>{{ data.precipitation }} mm</strong>
+          <strong :id="isToday ? 'nedbor' : 'nedbor-igaar'">{{ data.precipitation }} mm</strong>
         </div>
       </div>
 
       <div v-if="items.length" class="clothing-panel">
         <p class="clothing-title">Hvad skal du have på?</p>
         <ul class="clothing-panel-list">
-          <li v-for="item in items" :key="item" class="clothing-panel-item">{{ item }}</li>
+          <li v-for="item in items" :key="item" class="clothing-panel-item">
+            <component :is="clothingIcons[item]" v-if="clothingIcons[item]" :size="40" class="clothing-icon" />
+            <span>{{ item }}</span>
+          </li>
         </ul>
       </div>
     </div>
@@ -105,5 +139,12 @@ const weatherIcon = computed(() => {
   background: #eaf4fd;
   border-radius: 10px;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.clothing-icon {
+  flex-shrink: 0;
 }
 </style>
