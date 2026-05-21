@@ -1,6 +1,8 @@
 # 📋 WeatherDress — Projekt setup overblik
 
 **Repo:** https://github.com/Patrick-LD/WeatherDress_3.SemesterEksamen
+**API:** https://weatherdress-api.azurewebsites.net/
+**BLOBFRONTEND:** https://weatherdressfrontend.z1.web.core.windows.net/
 
 Hej team! Dette er en kort guide til hvordan vores repo er sat op, og hvordan vi arbejder sammen i det. Læs det hele igennem — så er vi alle på samme side når vi går i gang med at kode. 🙌
 
