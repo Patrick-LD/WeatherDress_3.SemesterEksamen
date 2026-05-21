@@ -22,7 +22,7 @@ export function useWeather() {
 
   const nuværende = computed(() => findNuværendeTime(todayData.value))
   const gårMiddag = computed(() => findMiddag(yesterdayData.value))
-  const tøjListe = computed(() => beregnTøj(nuværende.value))
+  const tøjListe = computed(() => beregnTøj(nuværende.value, todayData.value))
   const meddelelse = computed(() => lavMeddelelse(nuværende.value))
 
   async function søgVejr() {
