@@ -18,6 +18,14 @@ builder.Services.AddDbContext<WeatherDressDbContext>(opt =>
 builder.Services.AddScoped<IRecommendationHistoryRepository, RecommendationHistoryRepository>();
 builder.Services.AddHostedService<DailyRecommendationBackgroundService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+        policy.WithOrigins("https://weatherdressfrontend.z1.web.core.windows.net")
+              .AllowAnyMethod()
+              .AllowAnyHeader());
+});
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -42,6 +50,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowFrontend");
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.MapControllers();
