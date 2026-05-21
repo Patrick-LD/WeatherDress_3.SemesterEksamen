@@ -5,9 +5,9 @@ import time
 API_STATUS = "https://weatherdress-api.azurewebsites.net/api/motor/status"
 
 # BCM pin numbers
-BUKSER_PINS = [24, 25, 8, 7]    # Motor 1 - BOARD 18,22,24,26
-JAKKE_PINS  = [17, 27, 22, 23]  # Motor 2 - BOARD 11,13,15,16
-SKO_PINS    = [5, 6, 13, 19]    # Motor 3 - BOARD 29,31,33,35
+BUKSER_PINS = [17, 27, 22, 23]  # Motor 1 - BOARD 11,13,15,16
+SKO_PINS    = [24, 25, 8, 7]    # Motor 2 - BOARD 18,22,24,26
+JAKKE_PINS  = [6, 13, 19, 26]   # Motor 3 - BOARD 31,33,35,37
 
 FULD_OMDREJNING = 512
 
@@ -58,8 +58,8 @@ def main():
             if tjek_trigger():
                 print("Signal modtaget! Starter motorer...")
                 kør_motor(h, BUKSER_PINS, steps=64)
-                kør_motor(h, JAKKE_PINS, steps=64)
-                kør_motor(h, SKO_PINS, steps=64, reverse=True)
+                kør_motor(h, SKO_PINS, steps=64)
+                kør_motor(h, JAKKE_PINS, steps=64, reverse=True)
                 print("Færdig.")
             time.sleep(2)
     except KeyboardInterrupt:
