@@ -198,15 +198,15 @@ public class WeatherRepository : IWeatherRepository
         DetermineJacketAndPants(double temp, int code, double precipitation)
     {
         if (IsSnowCode(code) || temp < 5)
-            return (4, 270, "Koldt/sne", "Vinterjakke", "Flyverdragt");
+            return (4, 270, "Koldt/sne", "Flyverdragt", "Regnbukser");
 
         if (IsRainCode(code, precipitation))
-            return (3, 180, "Regn", "Regnjakke", "Flyverdragt");
+            return (3, 180, "Regn", "Regnjakke", "Regnbukser");
 
         if (temp >= 20)
             return (1, 0, "Sol/varmt", "T-shirt", "Shorts");
 
-        return (2, 90, "Overskyet", "Hoodie", "Jeans");
+        return (2, 90, "Overskyet", "Sweatshirt", "Jeans");
     }
 
     private static (int position, int angle, string shoes, string? note)

@@ -66,10 +66,12 @@ def tjek_trigger():
     try:
         r = requests.get(API_STATUS, timeout=5)
         if r.ok:
-            return r.json().get("triggered", False)
+            data = r.json()
+            if data.get("triggered"):
+                return data
     except Exception as e:
         print(f"API fejl: {e}")
-    return False
+    return None
 
 def main():
     h = lgpio.gpiochip_open(0)
@@ -80,11 +82,20 @@ def main():
     print("Klar — venter på signal fra WeatherDress...")
     try:
         while True:
-            if tjek_trigger():
-                print("Signal modtaget! Starter motorer...")
-                kør_motor(h, BUKSER_PINS, steps=64,  fuld_omdrejning=BUKSER_OMDREJNING)
-                kør_motor(h, SKO_PINS,    steps=128, fuld_omdrejning=SKO_OMDREJNING)
-                kør_motor(h, JAKKE_PINS,  steps=64,  fuld_omdrejning=JAKKE_OMDREJNING, reverse=True)
+            data = tjek_trigger()
+            if data:
+                jakke = (data.get("jacket") or "").lower()
+                bukser = (data.get("pants")  or "").lower()
+                sko    = (data.get("shoes")  or "").lower()
+                print(f"Signal: jakke={jakke}, bukser={bukser}, sko={sko}")
+
+                jakke_steps  = JAKKE_POSITIONER.get(jakke,  64)
+                bukser_steps = BUKSER_POSITIONER.get(bukser, 64)
+                sko_steps    = SKO_POSITIONER.get(sko,       128)
+
+                kør_motor(h, BUKSER_PINS, steps=bukser_steps, fuld_omdrejning=BUKSER_OMDREJNING)
+                kør_motor(h, SKO_PINS,    steps=sko_steps,    fuld_omdrejning=SKO_OMDREJNING)
+                kør_motor(h, JAKKE_PINS,  steps=jakke_steps,  fuld_omdrejning=JAKKE_OMDREJNING, reverse=True)
                 print("Færdig.")
             time.sleep(2)
     except KeyboardInterrupt:
