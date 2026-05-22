@@ -82,7 +82,7 @@ const weatherIcon = computed(() => {
         </div>
       </div>
 
-      <div v-if="items.length" class="clothing-panel">
+      <div v-if="items.length" class="clothing-panel" id="toj-anbefalet">
         <p class="clothing-title">Hvad skal du have på?</p>
         <ul class="clothing-panel-list">
           <li v-for="item in items" :key="item" class="clothing-panel-item">
