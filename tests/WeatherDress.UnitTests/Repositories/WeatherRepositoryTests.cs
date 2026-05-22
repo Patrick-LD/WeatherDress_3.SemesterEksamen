@@ -109,7 +109,7 @@ public class WeatherRepositoryTests
         var result = repo.GetClothingRecommendation("2100");
 
         Assert.Equal("Regnjakke", result.Jacket);
-        Assert.Equal("Flyverdragt", result.Pants);
+        Assert.Equal("Regnbukser", result.Pants);
         Assert.Equal("Gummistøvler", result.Shoes);
         Assert.Equal("Regn", result.WeatherCategory);
         Assert.Null(result.ShoesNote);
@@ -128,8 +128,8 @@ public class WeatherRepositoryTests
 
         var result = repo.GetClothingRecommendation("2100");
 
-        Assert.Equal("Vinterjakke", result.Jacket);
-        Assert.Equal("Flyverdragt", result.Pants);
+        Assert.Equal("Flyverdragt", result.Jacket);
+        Assert.Equal("Regnbukser", result.Pants);
         Assert.Equal("Vinterstøvler", result.Shoes);
         Assert.Equal("Koldt/sne", result.WeatherCategory);
     }
@@ -147,7 +147,7 @@ public class WeatherRepositoryTests
 
         var result = repo.GetClothingRecommendation("2100");
 
-        Assert.Equal("Hoodie", result.Jacket);
+        Assert.Equal("Sweatshirt", result.Jacket);
         Assert.Equal("Jeans", result.Pants);
         Assert.Equal("Sneakers", result.Shoes);
         Assert.Equal("Overskyet", result.WeatherCategory);

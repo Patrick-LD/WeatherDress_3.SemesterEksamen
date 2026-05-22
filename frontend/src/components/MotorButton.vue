@@ -2,6 +2,8 @@
 import { ref } from 'vue'
 import { triggerMotorer } from '../services/weatherApi.js'
 
+const props = defineProps({ zipCode: String })
+
 const starter = ref(false)
 const status = ref('')
 const fejl = ref(false)
@@ -11,7 +13,7 @@ async function startMotorer() {
   status.value = ''
   fejl.value = false
   try {
-    await triggerMotorer()
+    await triggerMotorer(props.zipCode)
     status.value = 'Motorerne er aktiveret!'
   } catch (err) {
     status.value = err.message || 'Noget gik galt.'
