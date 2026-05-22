@@ -17,8 +17,12 @@ export function hentVejrYesterday(zip) {
   return hentData(`${API_BASE}/api/weatherforecast/${zip}/yesterday`)
 }
 
-export async function triggerMotorer() {
-  const res = await fetch(`${API_BASE}/api/motor/trigger`, { method: 'POST' })
+export async function triggerMotorer(zipCode) {
+  const res = await fetch(`${API_BASE}/api/motor/trigger`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ zipCode })
+  })
   if (!res.ok) {
     const tekst = await res.text()
     throw new Error(tekst || `Fejl fra server (${res.status})`)

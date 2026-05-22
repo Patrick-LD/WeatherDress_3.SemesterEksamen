@@ -56,7 +56,7 @@ const {
         <HourlyForecast :data="todayData" />
         <WeatherMessage :text="meddelelse" />
       </div>
-      <MotorButton />
+      <MotorButton :zip-code="postnummer" />
     </div>
     <RecommendationHistory :zip-code="postnummer" />
 
